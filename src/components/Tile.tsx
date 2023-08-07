@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 
-const Tile = ({ letterGuessed, tileState }) => {
-  //Empty, correct, partiallyCorrect, incorrect
-  const [tileLetter, setTileLetter] = useState("");
+type TileProps = {
+  letterGuessed: string;
+  tileState: string;
+};
+
+const Tile = ({ letterGuessed, tileState } : TileProps) => {
+  const [tileLetter, setTileLetter] = useState<string>("");
 
   useEffect(() => {
     setTileLetter(letterGuessed);

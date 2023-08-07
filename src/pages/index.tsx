@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Row from "../components/Row.js";
+import Row from "../components/Row";
 
 export default function Game() {
-  const [correctWord, setCorrectWord] = useState();
+  const [correctWord, setCorrectWord] = useState<string>();
   const [numOfGameGuesses, setNumOfGameGuesses] = useState(0);
-  const [rowWordGuesses, setRowWordGuesses] = useState([]);
+  const [rowWordGuesses, setRowWordGuesses] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
@@ -15,25 +15,25 @@ export default function Game() {
           setCorrectWord(word);
         });
     }
-  }, []);
+  }, [correctWord]);
 
-  const isActiveRow = (index) => {
-    if (numOfGameGuesses === index) {
+  const isActiveRow = (i : number) => {
+    if (numOfGameGuesses === i) {
       return true;
     }
     return false;
   };
 
   const renderRows = () => {
-    return Array.from({ length: 5 }).map((_, index) => (
+    return Array.from({ length: 5 }).map((_, i) => (
       <Row
-        key={`row-${index}`}
+        key={`row-${i}`}
         setNumOfGameGuesses={setNumOfGameGuesses}
         numOfGameGuesses={numOfGameGuesses}
-        rowNumber={index}
-        rowWordGuess={rowWordGuesses[index] ? rowWordGuesses[index] : []}
+        rowNumber={i}
+        rowWordGuess={rowWordGuesses[i] ? rowWordGuesses[i] : ''}
         setRowWordGuesses={setRowWordGuesses}
-        isActiveRow={isActiveRow(index)}
+        isActiveRow={isActiveRow(i)}
         correctWord={correctWord}
         gameOver={gameOver}
         setGameOver={setGameOver}

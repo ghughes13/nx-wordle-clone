@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react";
-import Tile from "./Tile.js";
+import Tile from "./Tile";
+
+type RowProps = {
+  setNumOfGameGuesses: React.Dispatch<React.SetStateAction<number>>;
+  numOfGameGuesses: number;
+  rowNumber: number;
+  isActiveRow: boolean;
+  rowWordGuess: string;
+  setRowWordGuesses: React.Dispatch<React.SetStateAction<string[]>>;
+  correctWord: string | undefined;
+  gameOver: boolean;
+  setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const Row = ({
   setNumOfGameGuesses,
@@ -11,15 +23,15 @@ const Row = ({
   correctWord,
   gameOver,
   setGameOver,
-}) => {
-  const [lettersGuessed, setLettersGuessed] = useState([]);
-  const [tilesStates, setTilesStates] = useState([]);
+} : RowProps)   => {
+  const [lettersGuessed, setLettersGuessed] = useState<string[]>([]);
+  const [tilesStates, setTilesStates] = useState<string[]>([]);
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
   useEffect(() => {
-    const handleKeyPress = (e) => {
-      if ((lettersGuessed.length < 5) & alphabet.includes(e.key)) {
+    const handleKeyPress = (e : KeyboardEvent) => {
+      if (lettersGuessed.length < 5 && alphabet.includes(e.key)) {
         setLettersGuessed((lettersGuessed) => [...lettersGuessed, e.key]);
       }
 
@@ -34,13 +46,12 @@ const Row = ({
     };
 
     const validateWord = () => {
-      let tempTileStatesArray = [];
-      const correctWordAsArray = correctWord[0].split("");
+      let tempTileStatesArray : string[] = [];
+      const correctWordAsArray = correctWord && correctWord[0].split("");
       let correctCount = 0;
 
-      console.log(correctWord);
       rowWordGuess.split("").forEach((letter, i) => {
-        if (correctWordAsArray.includes(letter)) {
+        if (correctWordAsArray?.includes(letter)) {
           if (correctWordAsArray[i] === letter) {
             tempTileStatesArray.push("correct");
             correctCount++;
@@ -78,7 +89,7 @@ const Row = ({
     gameOver,
   ]);
 
-  const setPreviousGuessLetter = (i) => {
+  const setPreviousGuessLetter = (i : number) => {
     if (numOfGameGuesses > 0) {
       return rowWordGuess[i];
     } else {
